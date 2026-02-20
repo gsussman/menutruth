@@ -606,7 +606,7 @@ export default function PriceMatchingPage() {
     const { data: currentMatches } = await supabase
       .from("item_matches")
       .select("markup_percentage")
-      .eq("restaurant_id", restaurant.id);
+      .eq("restaurant_id", selectedRestaurant.id);
 
     let category = "none";
     let avgMarkup: number | null = null;
