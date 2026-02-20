@@ -186,7 +186,7 @@ export default function AdminPage() {
           markup_category: restaurant.markup_category,
           markup_percentage: restaurant.markup_percentage,
           notes: restaurant.notes || "",
-          workflow_status: (restaurant as Record<string, unknown>).workflow_status as string || "",
+          workflow_status: (restaurant as unknown as Record<string, unknown>).workflow_status as string || "",
         });
         setGeocodedPreview(null);
         setGeocodeError(null);
