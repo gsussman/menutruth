@@ -44,3 +44,4 @@ next-env.d.ts
 scraper/venv/
 __pycache__/
 *.pyc
+scraper/venv

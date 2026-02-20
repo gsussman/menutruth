@@ -328,14 +328,16 @@ export default function PriceMatchingPage() {
     setIsDeliveryAppOnly(selectedRestaurant.is_delivery_app_only || false);
     setMenuUrl(selectedRestaurant.website_url || selectedRestaurant.direct_ordering_url || "");
 
+    const restaurant = selectedRestaurant;
     async function loadItems() {
+      if (!restaurant) return;
       setLoading(true);
 
       // Load UberEats items
       const { data: ueItems } = await supabase
         .from("menu_items")
         .select("*")
-        .eq("restaurant_id", selectedRestaurant.id)
+        .eq("restaurant_id", restaurant.id)
         .eq("source", "ubereats")
         .order("category", { ascending: true })
         .order("item_name", { ascending: true });
@@ -344,7 +346,7 @@ export default function PriceMatchingPage() {
       const { data: actualMenuItems } = await supabase
         .from("menu_items")
         .select("*")
-        .eq("restaurant_id", selectedRestaurant.id)
+        .eq("restaurant_id", restaurant.id)
         .eq("source", "actual_menu")
         .order("item_name", { ascending: true });
 
@@ -352,7 +354,7 @@ export default function PriceMatchingPage() {
       const { data: existingMatches } = await supabase
         .from("item_matches")
         .select("*")
-        .eq("restaurant_id", selectedRestaurant.id);
+        .eq("restaurant_id", restaurant.id);
 
       setUbereatsItems(ueItems || []);
       setActualItems(actualMenuItems || []);
@@ -604,7 +606,7 @@ export default function PriceMatchingPage() {
     const { data: currentMatches } = await supabase
       .from("item_matches")
       .select("markup_percentage")
-      .eq("restaurant_id", selectedRestaurant.id);
+      .eq("restaurant_id", restaurant.id);
 
     let category = "none";
     let avgMarkup: number | null = null;
