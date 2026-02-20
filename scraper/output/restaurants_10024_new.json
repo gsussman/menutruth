@@ -1,0 +1,686 @@
+[
+  {
+    "name": "3 Times",
+    "ubereats_url": "https://www.ubereats.com/store/3-times-upper-west/nFYIqADxWdOTkcuUWbPGYg?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.397131",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Akura Ramen & Sushi",
+    "ubereats_url": "https://www.ubereats.com/store/akura-ramen-%26-sushi-1588-york-avenue/yzZxYWKAWc-wlpTD5iaztg?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.140142",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Amity Hall Uptown",
+    "ubereats_url": "https://www.ubereats.com/store/amity-hall-uptown/aMkjsMGbV_S-krrAFBhOVA?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.998943",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Bareburger",
+    "ubereats_url": "https://www.ubereats.com/store/bareburger-upper-west-side-broadway/8XfeW-4vQ52IpUOBREoYjg?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.202812",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Blue Willow \u591c\u6765\u6e58",
+    "ubereats_url": "https://www.ubereats.com/store/blue-willow-\u591c\u6765\u6e58/SAbpP4gLSjaKYkVtg3Ku8w?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.041318",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Carmine's",
+    "ubereats_url": "https://www.ubereats.com/store/carmines-upper-west-side/39AVxKdQTL-NO8FaqK7n8g?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.323091",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Charles Pan-Fried Chicken",
+    "ubereats_url": "https://www.ubereats.com/store/charles-pan-fried-chicken-uws/rUtu__cQU9OnAFiyJUdcCg?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.570848",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Chick-fil-A",
+    "ubereats_url": "https://www.ubereats.com/store/chick-fil-a-795-columbus-avenue/pRBIFVMIQOmIVxRnIcHecQ?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.558951",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "China Xiang \u4e2d\u570b\u6e58",
+    "ubereats_url": "https://www.ubereats.com/store/china-xiang-\u4e2d\u570b\u6e58/SsZq9mn2SCKSlkgsLlczUg?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.020235",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Chipotle Mexican Grill",
+    "ubereats_url": "https://www.ubereats.com/store/chipotle-mexican-grill-2298-broadway/u8QA48bgQTKAlcm_maoRlw?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.620954",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "City Diner",
+    "ubereats_url": "https://www.ubereats.com/store/city-diner/gPSTn7vEXnCBMc__Ydoueg?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.595920",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Crab Du Jour",
+    "ubereats_url": "https://www.ubereats.com/store/crab-du-jour-malcolm-x-blvd/eEM75HxzSj2jYAPLQlaQ8Q?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.910844",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Dim Sum Sam(UPW)",
+    "ubereats_url": "https://www.ubereats.com/store/dim-sum-samupw/iFZ3t5SRRaWLWhGqTTLn3Q?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.858297",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Dinosaur Bar-B-Que",
+    "ubereats_url": "https://www.ubereats.com/store/dinosaur-bar-b-que-harlem/TOryB9KvW5yAr2famUkLGg?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.092223",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Domino's",
+    "ubereats_url": "https://www.ubereats.com/store/dominos-592-columbus-ave/1ScaJ6JWVcWSyXCyPurjcg?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.472315",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Dragon 105 of Columbus",
+    "ubereats_url": "https://www.ubereats.com/store/dragon-105-of-columbus/Z9uLRCFFUcOTFLpqFgdg8g?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.356745",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Dragon 89",
+    "ubereats_url": "https://www.ubereats.com/store/dragon-89-amsterdam-ave/WOyYWRaHT_qQwvRR54Nzmg?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.890869",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Flame",
+    "ubereats_url": "https://www.ubereats.com/store/flame-w-82nd-st/UNEBwssYSlCgzyBHopzaAw?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.051575",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Fresh Flower- Flowers & Cake Shop",
+    "ubereats_url": "https://www.ubereats.com/store/fresh-flower-flowers-%26-cake-shop/v_L5dHpXW42x7CqkmYonDA?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.072516",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Fumo UWS",
+    "ubereats_url": "https://www.ubereats.com/store/fumo-uws/p_Q9AgTQQNiRhqXC04ssMA?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.345632",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Gazala's Mediterranean Restaurant",
+    "ubereats_url": "https://www.ubereats.com/store/gazalas-mediterranean-restaurant/ZK6TNOYHTpmGnYeNa-Uukw?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.879470",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Gyu-Kaku Japanese BBQ",
+    "ubereats_url": "https://www.ubereats.com/store/gyu-kaku-japanese-bbq-amsterdam/b876medHRYuPO4-RwSUa0g?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.551915",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Holy Schnitzel",
+    "ubereats_url": "https://www.ubereats.com/store/holy-schnitzel-uws/WgsJW6VURUyS2MKKXWI2kw?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.061429",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Joe's home of soup dumplings",
+    "ubereats_url": "https://www.ubereats.com/store/joes-home-of-soup-dumplings/shSpcND0XX2Q9moR65XKTA?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.460656",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Just Salad",
+    "ubereats_url": "https://www.ubereats.com/store/just-salad-670-columbus-ave/cBePdXQ0V-CXTyXgj9jqLw?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.031276",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Kasbah Grill",
+    "ubereats_url": "https://www.ubereats.com/store/kasbah-grill-w-85th-st/rfpQALNsSWy_t0fwyCDlWQ?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.149618",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Kesari Indian Cuisine",
+    "ubereats_url": "https://www.ubereats.com/store/kesari-indian-cuisine/Tlb78kLWSyK1ik8jnltn9w?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.275145",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "La Perla Nascosta",
+    "ubereats_url": "https://www.ubereats.com/store/la-perla-nascosta-206-west-79th-street/Kbnp8zqiVOq6oMSabYTV2A?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.172049",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Lilli and Loo",
+    "ubereats_url": "https://www.ubereats.com/store/lilli-and-loo-lexington/cWwPPCMGQzKSEroE-sARPA?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.610056",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Lokal 83",
+    "ubereats_url": "https://www.ubereats.com/store/lokal-83/bAOOQBKgRbWCry9Jcz5dcw?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.191516",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Lucia Pizza UES",
+    "ubereats_url": "https://www.ubereats.com/store/lucia-pizza-ues/A4i5p8chVU2c4iKKqHArTA?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.750547",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Luke's Lobster",
+    "ubereats_url": "https://www.ubereats.com/store/lukes-lobster-426-amsterdam-ave/-N12M4gySbG8J6D29wVHsw?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.585734",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Made in New York Pizza",
+    "ubereats_url": "https://www.ubereats.com/store/made-in-new-york-pizza-flagship/V4FFHtqAUvmpoOUkYGrQHQ?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.472130",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Maison Pickle",
+    "ubereats_url": "https://www.ubereats.com/store/maison-pickle/z0jcq8tORlijUd7yvShJGw?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.652609",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Mamoun's Falafel",
+    "ubereats_url": "https://www.ubereats.com/store/mamouns-falafel-uws/8QAVT7WvT_m48Uaq9B-HVA?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.606659",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Manhattan Valley",
+    "ubereats_url": "https://www.ubereats.com/store/manhattan-valley-uws/f51WNk3KSt6820T4cBOThw?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.159949",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Marinara Pizza",
+    "ubereats_url": "https://www.ubereats.com/store/marinara-pizza-uws/D_raO24DS8iBvQXKTUGL4g?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.684658",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "McDonald's\u00ae",
+    "ubereats_url": "https://www.ubereats.com/store/mcdonalds-uws-broadway-%26-96th/1nl3G3cORAuKRmVri1Gh3g?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.584118",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Melba's",
+    "ubereats_url": "https://www.ubereats.com/store/melbas/5A8gXaQ8SRCxryN4RSeJvw?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.529318",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Mido japanese",
+    "ubereats_url": "https://www.ubereats.com/store/mido-japanese/0ZhhSJMuQhm7J9o8JhiQIw?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.333870",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Miriam Upper West Side",
+    "ubereats_url": "https://www.ubereats.com/store/miriam-upper-west-side/9I_k3iOgViWa02WsXbmBmA?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.411770",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Miyako Sushi",
+    "ubereats_url": "https://www.ubereats.com/store/miyako-sushi/lkj64Z50QlKG30JM1TBZyQ?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.791120",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Mizu Hibachi and Sushi",
+    "ubereats_url": "https://www.ubereats.com/store/mizu-hibachi-and-sushi/z8NZsH62V_6IILrSGrbZLQ?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.811094",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Motorino Pizza",
+    "ubereats_url": "https://www.ubereats.com/store/motorino-pizza-uws/u0u8_hqDU_i1lv9x8Ty4ag?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.845583",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "New Kam Lai",
+    "ubereats_url": "https://www.ubereats.com/store/new-kam-lai/rASxwW2ZUz6hw1DQTgZk7w?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.104376",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Noche Mexicana No. 2",
+    "ubereats_url": "https://www.ubereats.com/store/noche-mexicana-no-2/QoNW-up3WOSLnwEvLo3y6w?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.770411",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Ollie's To Go Chinese",
+    "ubereats_url": "https://www.ubereats.com/store/ollies-to-go-chinese-upper-west-side/c3_eQe5oRwWEWrr36WHPIg?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.642595",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Panda Express",
+    "ubereats_url": "https://www.ubereats.com/store/panda-express-2852-broadway/Er0lBm0wTc-wRcibmT9q1g?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.967224",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Panera Bread",
+    "ubereats_url": "https://www.ubereats.com/store/panera-bread-2333-broadway/6EmBMRpAXA-keNWt49XLGA?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.573763",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Parm",
+    "ubereats_url": "https://www.ubereats.com/store/parm-upper-west-side/7X1psAygSLOjT4dYpAeQ1Q?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.694744",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Patsy's Pizzeria",
+    "ubereats_url": "https://www.ubereats.com/store/patsys-pizzeria-original/YQP7qbFeR2Cs807mVz_FrQ?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.518898",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Pho Shop",
+    "ubereats_url": "https://www.ubereats.com/store/pho-shop-upper-west-side/XS7FyaIMRBWIc544de_YgA?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.312200",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Pie Pie Pizza",
+    "ubereats_url": "https://www.ubereats.com/store/pie-pie-pizza/PP4k-xe4WUG0nVqLR75g6w?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.114075",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Pig Heaven",
+    "ubereats_url": "https://www.ubereats.com/store/pig-heaven/aDPC6M3LRuWMcy1FLCTwgA?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.423126",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Popeyes",
+    "ubereats_url": "https://www.ubereats.com/store/popeyes-2534-broadway/iHiftIepQjSWNkP0qM8WIA?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.546635",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Saba's Pizza",
+    "ubereats_url": "https://www.ubereats.com/store/sabas-pizza-uws/tLqHiWpMTz6J0RI2GHqZsA?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.240943",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Saiguette",
+    "ubereats_url": "https://www.ubereats.com/store/saiguette/Wgsk4erDVYK9v0oIk2WgTw?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.506508",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Serafina Upper West Side",
+    "ubereats_url": "https://www.ubereats.com/store/serafina-upper-west-side/1wBXnhyjRiWLoc4JT-iDAQ?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.216255",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Simply Noodles",
+    "ubereats_url": "https://www.ubereats.com/store/simply-noodles/4ru_owDmXW2eLBv07_7nDg?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.370420",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Simply Sushi at Six60One",
+    "ubereats_url": "https://www.ubereats.com/store/simply-sushi-at-six60one/5w-SBogrWsmNKJ5rbdHHkg?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.562778",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Song\u2019E Napule Pizzeria & Trattoria",
+    "ubereats_url": "https://www.ubereats.com/store/songe-napule-pizzeria-%26-trattoria-upper-west-side/soENPhXyWdyulfeEBYozOg?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.957272",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Springbone",
+    "ubereats_url": "https://www.ubereats.com/store/springbone-upper-east-side/_MCEzE-pWb-LkudlL_8dKw?diningMode=PICKUP",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.618778",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Suram",
+    "ubereats_url": "https://www.ubereats.com/store/suram-west-end-avenue/dET3JdEyVDCCmHQDXTK-WA?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.263892",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Sushi Para Japanese Restaurant",
+    "ubereats_url": "https://www.ubereats.com/store/sushi-para-japanese-restaurant/cJnIubsZSpa6nGU3JuR1yw?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.382980",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Taco Bell",
+    "ubereats_url": "https://www.ubereats.com/store/taco-bell-1503-lexington-ave/C4pTte6vSwumePkygejOZQ?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.496073",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Tacombi",
+    "ubereats_url": "https://www.ubereats.com/store/tacombi-uws/HtYn2zNDQ4aip7Kky9zHjQ?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.253560",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "THAI72 Kitchen & Bar",
+    "ubereats_url": "https://www.ubereats.com/store/thai72-kitchen-%26-bar/4AhStjx0QHqEw89wsYYNwg?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.540206",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "The Tang",
+    "ubereats_url": "https://www.ubereats.com/store/the-tang/F3tF2yxmRP-9431jo4pynw?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.595966",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "The Viand Diner & Bar",
+    "ubereats_url": "https://www.ubereats.com/store/the-viand-diner-%26-bar/lY8joOMOTmq-hGD9gTaW9Q?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.662682",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Tri Dim West Restaurant and Bar",
+    "ubereats_url": "https://www.ubereats.com/store/tri-dim-west-restaurant-and-bar/26_KdjgcSHyBu3h76nBMVg?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.436543",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Turco Mediterranean Grill",
+    "ubereats_url": "https://www.ubereats.com/store/turco-mediterranean-grill/liDrF3YXTYagHv3KtrQLzg?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.760585",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Two Wheels",
+    "ubereats_url": "https://www.ubereats.com/store/two-wheels/43TxoKySR-y2r8h-eGwo-g?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.945296",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Up Thai",
+    "ubereats_url": "https://www.ubereats.com/store/up-thai/fjPn-R3QStiFciGCztgcsQ?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.511868",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Westville",
+    "ubereats_url": "https://www.ubereats.com/store/westville-uws/rUaLgy2AVgOqFdOr-p3J4w?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.717390",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Wingstop",
+    "ubereats_url": "https://www.ubereats.com/store/wingstop-2665-broadway/PiHToesEWzG6qDO225CUaQ?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:12.534942",
+    "zip_code": "10024",
+    "address": ""
+  },
+  {
+    "name": "Yasouvlaki",
+    "ubereats_url": "https://www.ubereats.com/store/yasouvlaki-upper-west-side/dkcQuscNXcSY-ASwNjtSvw?diningMode=DELIVERY",
+    "ubereats_rating": null,
+    "cuisines": [],
+    "scraped_at": "2026-02-19T15:40:13.229870",
+    "zip_code": "10024",
+    "address": ""
+  }
+]
