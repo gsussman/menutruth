@@ -22,7 +22,7 @@ export default function Home() {
   const [shouldFlyTo, setShouldFlyTo] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [loading, setLoading] = useState(true);
-  const [filtersCollapsed, setFiltersCollapsed] = useState(false);
+  const [filtersCollapsed, setFiltersCollapsed] = useState(true);
   const hydratedFromQuery = useRef(false);
 
   // Fetch restaurants when filters change
