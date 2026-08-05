@@ -21,9 +21,12 @@ CREATE TABLE restaurants (
   has_pickup BOOLEAN NOT NULL DEFAULT false,
   ubereats_url TEXT,
   ubereats_rating DECIMAL(2, 1),
+  slug TEXT UNIQUE,
   markup_category TEXT NOT NULL DEFAULT 'none' CHECK (markup_category IN ('none', 'low', 'medium', 'high')),
   markup_percentage DECIMAL(5, 2),
   notes TEXT,
+  actual_menu_url TEXT,
+  actual_prices_verified_at TIMESTAMPTZ,
   last_verified_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -70,16 +73,30 @@ CREATE TABLE community_flags (
   resolved_at TIMESTAMPTZ
 );
 
+-- Scrape history table (archives each scrape for comparison)
+CREATE TABLE scrape_runs (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  restaurant_id UUID NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
+  scraped_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  source TEXT NOT NULL CHECK (source IN ('ubereats', 'actual_menu')),
+  item_count INTEGER NOT NULL,
+  items_snapshot JSONB NOT NULL,
+  changed_from_previous BOOLEAN DEFAULT true,
+  notes TEXT
+);
+
 -- Indexes for performance
 CREATE INDEX idx_restaurants_neighborhood ON restaurants(neighborhood);
 CREATE INDEX idx_restaurants_zip_code ON restaurants(zip_code);
 CREATE INDEX idx_restaurants_markup_category ON restaurants(markup_category);
+CREATE INDEX idx_restaurants_slug ON restaurants(slug);
 CREATE INDEX idx_restaurants_cuisines ON restaurants USING GIN(cuisines);
 CREATE INDEX idx_menu_items_restaurant_id ON menu_items(restaurant_id);
 CREATE INDEX idx_menu_items_source ON menu_items(source);
 CREATE INDEX idx_item_matches_restaurant_id ON item_matches(restaurant_id);
 CREATE INDEX idx_community_flags_restaurant_id ON community_flags(restaurant_id);
 CREATE INDEX idx_community_flags_status ON community_flags(status);
+CREATE INDEX idx_scrape_runs_restaurant ON scrape_runs(restaurant_id, source, scraped_at DESC);
 
 -- Updated_at trigger function
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -111,12 +128,14 @@ ALTER TABLE restaurants ENABLE ROW LEVEL SECURITY;
 ALTER TABLE menu_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE item_matches ENABLE ROW LEVEL SECURITY;
 ALTER TABLE community_flags ENABLE ROW LEVEL SECURITY;
+ALTER TABLE scrape_runs ENABLE ROW LEVEL SECURITY;
 
 -- Public read access for all tables
 CREATE POLICY "Public read access" ON restaurants FOR SELECT USING (true);
 CREATE POLICY "Public read access" ON menu_items FOR SELECT USING (true);
 CREATE POLICY "Public read access" ON item_matches FOR SELECT USING (true);
 CREATE POLICY "Public read access" ON community_flags FOR SELECT USING (true);
+CREATE POLICY "Public read access" ON scrape_runs FOR SELECT USING (true);
 
 -- Anyone can create community flags
 CREATE POLICY "Anyone can create flags" ON community_flags FOR INSERT WITH CHECK (true);

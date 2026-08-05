@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   Plus,
   Search,
@@ -17,11 +18,21 @@ import {
   Loader2,
   AlertCircle,
   LogOut,
+  DollarSign,
+  Link2,
 } from "lucide-react";
 import { createBrowserClient } from "@/lib/supabase-browser";
 import { Restaurant, CuisineType, MarkupCategory } from "@/lib/types";
 import { MarkupBadge } from "@/components/MarkupBadge";
 import { supabase } from "@/lib/supabase";
+
+interface RestaurantStats {
+  ue_count: number;
+  actual_count: number;
+  match_count: number;
+  ue_scraped_at: string | null;
+  scrape_run_count: number;
+}
 
 type Tab = "restaurants" | "menu-items" | "matches" | "flags";
 
@@ -76,6 +87,7 @@ export default function AdminPage() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [menuItemCount, setMenuItemCount] = useState(0);
   const [matchCount, setMatchCount] = useState(0);
+  const [restaurantStats, setRestaurantStats] = useState<Record<string, RestaurantStats>>({});
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -114,6 +126,44 @@ export default function AdminPage() {
 
   // Load data from Supabase
   useEffect(() => {
+    async function fetchAllRestaurantIds(
+      table: "menu_items" | "item_matches",
+      source?: "ubereats" | "actual_menu"
+    ): Promise<Array<{ restaurant_id: string; scraped_at?: string }>> {
+      const pageSize = 1000;
+      let countQuery = supabase
+        .from(table)
+        .select("restaurant_id", { count: "exact", head: true });
+      if (source) countQuery = countQuery.eq("source", source);
+      const { count } = await countQuery;
+      const total = count || 0;
+      if (total === 0) return [];
+
+      const pages = Math.ceil(total / pageSize);
+      const selectCols = source === "ubereats" ? "restaurant_id, scraped_at" : "restaurant_id";
+      const pageResults = await Promise.all(
+        Array.from({ length: pages }, (_, i) => {
+          const from = i * pageSize;
+          let q = supabase
+            .from(table)
+            .select(selectCols)
+            .range(from, from + pageSize - 1);
+          if (source) q = q.eq("source", source);
+          return q;
+        })
+      );
+
+      const rows: Array<{ restaurant_id: string; scraped_at?: string }> = [];
+      for (const { data } of pageResults) {
+        if (data) {
+          for (const row of data as Array<{ restaurant_id: string; scraped_at?: string }>) {
+            rows.push(row);
+          }
+        }
+      }
+      return rows;
+    }
+
     async function loadData() {
       setLoading(true);
       
@@ -125,6 +175,65 @@ export default function AdminPage() {
       
       if (restaurantData) {
         setRestaurants(restaurantData as Restaurant[]);
+        
+        const stats: Record<string, RestaurantStats> = {};
+        for (const r of restaurantData) {
+          stats[r.id] = { ue_count: 0, actual_count: 0, match_count: 0, ue_scraped_at: null, scrape_run_count: 0 };
+        }
+
+        const [ueItems, actualItems, matches, scrapeRuns] = await Promise.all([
+          fetchAllRestaurantIds("menu_items", "ubereats"),
+          fetchAllRestaurantIds("menu_items", "actual_menu"),
+          fetchAllRestaurantIds("item_matches"),
+          (async () => {
+            const pageSize = 1000;
+            const { count } = await supabase
+              .from("scrape_runs")
+              .select("restaurant_id", { count: "exact", head: true })
+              .eq("source", "ubereats");
+            const total = count || 0;
+            if (total === 0) return [] as Array<{ restaurant_id: string }>;
+            const pages = Math.ceil(total / pageSize);
+            const pageResults = await Promise.all(
+              Array.from({ length: pages }, (_, i) => {
+                const from = i * pageSize;
+                return supabase
+                  .from("scrape_runs")
+                  .select("restaurant_id")
+                  .eq("source", "ubereats")
+                  .range(from, from + pageSize - 1);
+              })
+            );
+            const rows: Array<{ restaurant_id: string }> = [];
+            for (const { data } of pageResults) {
+              if (data) rows.push(...data);
+            }
+            return rows;
+          })(),
+        ]);
+
+        for (const item of ueItems) {
+          if (stats[item.restaurant_id]) {
+            stats[item.restaurant_id].ue_count++;
+            if (item.scraped_at) {
+              const current = stats[item.restaurant_id].ue_scraped_at;
+              if (!current || item.scraped_at > current) {
+                stats[item.restaurant_id].ue_scraped_at = item.scraped_at;
+              }
+            }
+          }
+        }
+        for (const item of actualItems) {
+          if (stats[item.restaurant_id]) stats[item.restaurant_id].actual_count++;
+        }
+        for (const match of matches) {
+          if (stats[match.restaurant_id]) stats[match.restaurant_id].match_count++;
+        }
+        for (const run of scrapeRuns) {
+          if (stats[run.restaurant_id]) stats[run.restaurant_id].scrape_run_count++;
+        }
+        
+        setRestaurantStats(stats);
       }
 
       // Get counts
@@ -456,16 +565,16 @@ export default function AdminPage() {
                       Restaurant
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-[var(--muted)]">
-                      Cuisine
+                      Items
+                    </th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-[var(--muted)]">
+                      Status
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-[var(--muted)]">
                       Markup
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-[var(--muted)]">
-                      Direct Delivery
-                    </th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-[var(--muted)]">
-                      Verified
+                      Dates
                     </th>
                     <th className="px-4 py-3 text-right text-sm font-medium text-[var(--muted)]">
                       Actions
@@ -473,75 +582,118 @@ export default function AdminPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredRestaurants.map((restaurant) => (
-                    <tr
-                      key={restaurant.id}
-                      className="border-b border-[var(--border)] last:border-0 hover:bg-[var(--surface-hover)]/50"
-                    >
-                      <td className="px-4 py-3">
-                        <div>
-                          <p className="font-medium text-[var(--foreground)]">
-                            {restaurant.name}
-                          </p>
-                          <p className="text-sm text-[var(--muted)]">
-                            {restaurant.address}
-                          </p>
-                        </div>
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className="text-sm capitalize">
-                          {restaurant.cuisines.join(", ")}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <MarkupBadge
-                          category={restaurant.markup_category}
-                          percentage={restaurant.markup_percentage}
-                          size="sm"
-                        />
-                      </td>
-                      <td className="px-4 py-3">
-                        {restaurant.has_direct_delivery ? (
-                          <span className="inline-flex items-center gap-1 text-emerald-600">
-                            <Check size={16} />
-                            Yes
+                  {filteredRestaurants.map((restaurant) => {
+                    const stats = restaurantStats[restaurant.id] || { ue_count: 0, actual_count: 0, match_count: 0, ue_scraped_at: null, scrape_run_count: 0 };
+                    const getStatus = () => {
+                      if (stats.actual_count === 0) return { label: "Needs Actual Prices", color: "text-amber-600 bg-amber-50 dark:bg-amber-900/20" };
+                      if (stats.match_count < stats.actual_count) return { label: "Needs Matches", color: "text-blue-600 bg-blue-50 dark:bg-blue-900/20" };
+                      return { label: "Complete", color: "text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20" };
+                    };
+                    const status = getStatus();
+                    const formatDate = (iso: string | null | undefined) =>
+                      iso ? new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" }) : "—";
+                    const ueScraped = stats.ue_scraped_at || restaurant.last_verified_at;
+                    const pricesVerified = restaurant.actual_prices_verified_at;
+                    const hasMenuUrl = Boolean(restaurant.actual_menu_url);
+                    
+                    return (
+                      <tr
+                        key={restaurant.id}
+                        className="border-b border-[var(--border)] last:border-0 hover:bg-[var(--surface-hover)]/50"
+                      >
+                        <td className="px-4 py-3">
+                          <div>
+                            <div className="flex items-center gap-1.5">
+                              <p className="font-medium text-[var(--foreground)]">
+                                {restaurant.name}
+                              </p>
+                              {hasMenuUrl && (
+                                <a
+                                  href={restaurant.actual_menu_url!}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-emerald-600 hover:text-emerald-700"
+                                  title={restaurant.actual_menu_url!}
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <Link2 size={14} />
+                                </a>
+                              )}
+                            </div>
+                            <p className="text-sm text-[var(--muted)]">
+                              {restaurant.cuisines.slice(0, 2).join(", ")}
+                            </p>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="text-sm space-y-1">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[var(--muted)]">UE:</span>
+                              <span className="font-medium">{stats.ue_count}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-[var(--muted)]">Actual:</span>
+                              <span className="font-medium">{stats.actual_count}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-[var(--muted)]">Matches:</span>
+                              <span className="font-medium">{stats.match_count}</span>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${status.color}`}>
+                            {status.label}
                           </span>
-                        ) : (
-                          <span className="text-[var(--muted)]">No</span>
-                        )}
-                      </td>
-                      <td className="px-4 py-3">
-                        <span className="text-sm text-[var(--muted)]">
-                          {new Date(restaurant.last_verified_at).toLocaleDateString()}
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center justify-end gap-1">
-                          <button
-                            onClick={() => handleMarkVerified(restaurant.id)}
-                            className="p-2 rounded-lg hover:bg-[var(--surface-hover)]"
-                            title="Mark as verified"
-                          >
-                            <RefreshCw size={16} className="text-[var(--muted)]" />
-                          </button>
-                          <button
-                            onClick={() => setEditingId(restaurant.id)}
-                            className="p-2 rounded-lg hover:bg-[var(--surface-hover)]"
-                            title="Edit"
-                          >
-                            <Edit2 size={16} className="text-[var(--muted)]" />
-                          </button>
-                          <button
-                            onClick={() => handleDelete(restaurant.id)}
-                            className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20"
-                            title="Delete"
-                          >
-                            <Trash2 size={16} className="text-red-500" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td className="px-4 py-3">
+                          <MarkupBadge
+                            category={restaurant.markup_category}
+                            percentage={restaurant.markup_percentage}
+                            size="sm"
+                          />
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="text-xs space-y-1 text-[var(--muted)]">
+                            <div>
+                              UE: {formatDate(ueScraped)}
+                              {stats.scrape_run_count > 0 && (
+                                <span className="ml-1 text-[var(--foreground)]">
+                                  · {stats.scrape_run_count} scrape{stats.scrape_run_count === 1 ? "" : "s"}
+                                </span>
+                              )}
+                            </div>
+                            <div>Prices: {formatDate(pricesVerified)}</div>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center justify-end gap-1">
+                            <Link
+                              href={`/admin/prices?restaurant=${restaurant.id}`}
+                              className="p-2 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20"
+                              title="Match Prices"
+                            >
+                              <DollarSign size={16} className="text-emerald-600" />
+                            </Link>
+                            <button
+                              onClick={() => setEditingId(restaurant.id)}
+                              className="p-2 rounded-lg hover:bg-[var(--surface-hover)]"
+                              title="Edit"
+                            >
+                              <Edit2 size={16} className="text-[var(--muted)]" />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(restaurant.id)}
+                              className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20"
+                              title="Delete"
+                            >
+                              <Trash2 size={16} className="text-red-500" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

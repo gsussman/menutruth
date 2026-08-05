@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { Restaurant, ItemMatchWithItems } from "@/lib/types";
 import { MarkupBadge } from "./MarkupBadge";
+import { restaurantSharePath } from "@/lib/slug";
 import {
   X,
   Phone,
@@ -12,6 +14,8 @@ import {
   Store,
   Flag,
   Clock,
+  Link2,
+  Check,
 } from "lucide-react";
 
 interface RestaurantDetailProps {
@@ -19,6 +23,9 @@ interface RestaurantDetailProps {
   itemMatches?: ItemMatchWithItems[];
   onClose: () => void;
   onFlag?: () => void;
+  showShare?: boolean;
+  /** Link to /r/[slug] — hide when already on that page */
+  showOpenPage?: boolean;
 }
 
 export function RestaurantDetail({
@@ -26,15 +33,37 @@ export function RestaurantDetail({
   itemMatches = [],
   onClose,
   onFlag,
+  showShare = true,
+  showOpenPage = true,
 }: RestaurantDetailProps) {
+  const [copied, setCopied] = useState(false);
+
+  // Fixed locale + UTC avoids server/client date mismatches
   const verifiedDate = new Date(restaurant.last_verified_at).toLocaleDateString(
     "en-US",
     {
       month: "short",
       day: "numeric",
       year: "numeric",
+      timeZone: "UTC",
     }
   );
+
+  const sharePath = restaurant.slug
+    ? restaurantSharePath(restaurant.slug)
+    : null;
+
+  const handleCopyLink = async () => {
+    if (!sharePath) return;
+    const shareUrl = `${window.location.origin}${sharePath}`;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      prompt("Copy this link:", shareUrl);
+    }
+  };
 
   return (
     <div className="h-full overflow-y-auto bg-[var(--surface)] animate-slide-in">
@@ -62,12 +91,34 @@ export function RestaurantDetail({
         </div>
 
         {/* Markup Badge */}
-        <div className="mt-4">
+        <div className="mt-4 flex flex-wrap items-center gap-2">
           <MarkupBadge
             category={restaurant.markup_category}
             percentage={restaurant.markup_percentage}
             size="lg"
           />
+          {showShare && sharePath ? (
+            <button
+              onClick={handleCopyLink}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--border)] text-sm font-medium hover:bg-[var(--surface-hover)] transition-colors"
+            >
+              {copied ? (
+                <Check size={14} className="text-emerald-600" />
+              ) : (
+                <Link2 size={14} />
+              )}
+              {copied ? "Copied" : "Copy share link"}
+            </button>
+          ) : null}
+          {showShare && showOpenPage && sharePath ? (
+            <a
+              href={sharePath}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--border)] text-sm font-medium hover:bg-[var(--surface-hover)] transition-colors"
+            >
+              <ExternalLink size={14} />
+              Open page
+            </a>
+          ) : null}
         </div>
       </div>
 
@@ -159,6 +210,23 @@ export function RestaurantDetail({
                   className="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[var(--border)] text-[var(--foreground)] font-medium text-sm hover:bg-[var(--muted)] hover:text-white transition-colors"
                 >
                   View
+                  <ExternalLink size={14} />
+                </a>
+              </div>
+            )}
+            {restaurant.website_url && (
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-[var(--surface-hover)] border border-[var(--border)]">
+                <Globe size={20} className="text-[var(--muted)]" />
+                <div className="flex-1">
+                  <p className="font-medium text-[var(--foreground)]">Website</p>
+                </div>
+                <a
+                  href={restaurant.website_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-[var(--border)] text-[var(--foreground)] font-medium text-sm hover:bg-[var(--muted)] hover:text-white transition-colors"
+                >
+                  Visit
                   <ExternalLink size={14} />
                 </a>
               </div>

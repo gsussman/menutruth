@@ -18,6 +18,7 @@ import {
   ShoppingCart,
   ExternalLink,
   LogOut,
+  X,
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { createBrowserClient } from "@/lib/supabase-browser";
@@ -31,6 +32,8 @@ interface Restaurant {
   ordering_method?: string;
   direct_ordering_url?: string;
   website_url?: string;
+  actual_menu_url?: string;
+  actual_prices_verified_at?: string;
   has_online_ordering?: boolean;
   has_phone_ordering?: boolean;
   is_delivery_app_only?: boolean;
@@ -62,10 +65,28 @@ interface ItemMatch {
   is_manual_match: boolean;
 }
 
+interface ScrapeRunItem {
+  name: string;
+  price: number;
+  category?: string;
+}
+
+interface ScrapeRun {
+  id: string;
+  restaurant_id: string;
+  scraped_at: string;
+  source: "ubereats" | "actual_menu";
+  item_count: number;
+  items_snapshot: ScrapeRunItem[] | string;
+  changed_from_previous: boolean;
+  notes: string | null;
+}
+
 export default function PriceMatchingPage() {
   const router = useRouter();
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [restaurantStats, setRestaurantStats] = useState<Record<string, RestaurantStats>>({});
+  const [deepLinkHandled, setDeepLinkHandled] = useState(false);
 
   const handleSignOut = async () => {
     const supabase = createBrowserClient();
@@ -110,6 +131,11 @@ export default function PriceMatchingPage() {
 
   // Filter state
   const [statusFilter, setStatusFilter] = useState<"all" | "needs_actual" | "needs_matches" | "complete">("all");
+
+  // Scrape history
+  const [scrapeRuns, setScrapeRuns] = useState<ScrapeRun[]>([]);
+  const [showScrapeHistory, setShowScrapeHistory] = useState(false);
+  const [viewingScrapeRun, setViewingScrapeRun] = useState<ScrapeRun | null>(null);
 
   // Import menu from URL (basic HTTP fetch + LLM)
   const handleImportFromUrl = async () => {
@@ -227,8 +253,11 @@ export default function PriceMatchingPage() {
       // Update stats for actual item count
       updateRestaurantStats(selectedRestaurant.id, { actual_count: newActualItems.length });
 
-      // Update restaurant with ordering info
-      const updates: Record<string, unknown> = {};
+      // Update restaurant with ordering info and actual menu URL
+      const updates: Record<string, unknown> = {
+        actual_menu_url: importUrl || null,
+        actual_prices_verified_at: new Date().toISOString(),
+      };
       if (orderingMethod !== "unknown") {
         updates.ordering_method = orderingMethod;
       }
@@ -236,12 +265,17 @@ export default function PriceMatchingPage() {
         updates.direct_ordering_url = importUrl;
       }
 
-      if (Object.keys(updates).length > 0) {
-        await supabase
-          .from("restaurants")
-          .update(updates)
-          .eq("id", selectedRestaurant.id);
-      }
+      await supabase
+        .from("restaurants")
+        .update(updates)
+        .eq("id", selectedRestaurant.id);
+      
+      // Update local state
+      setSelectedRestaurant({
+        ...selectedRestaurant,
+        actual_menu_url: importUrl || undefined,
+        actual_prices_verified_at: new Date().toISOString(),
+      });
     }
 
     if (error) {
@@ -253,52 +287,98 @@ export default function PriceMatchingPage() {
 
   // Load restaurants and their stats
   useEffect(() => {
+    async function fetchAllRestaurantIds(
+      table: "menu_items" | "item_matches",
+      source?: "ubereats" | "actual_menu"
+    ): Promise<string[]> {
+      const pageSize = 1000;
+      // Get exact total so we can fetch pages in parallel
+      let countQuery = supabase
+        .from(table)
+        .select("restaurant_id", { count: "exact", head: true });
+      if (source) countQuery = countQuery.eq("source", source);
+      const { count } = await countQuery;
+      const total = count || 0;
+      if (total === 0) return [];
+
+      const pages = Math.ceil(total / pageSize);
+      const pageResults = await Promise.all(
+        Array.from({ length: pages }, (_, i) => {
+          const from = i * pageSize;
+          let q = supabase
+            .from(table)
+            .select("restaurant_id")
+            .range(from, from + pageSize - 1);
+          if (source) q = q.eq("source", source);
+          return q;
+        })
+      );
+
+      const ids: string[] = [];
+      for (const { data } of pageResults) {
+        if (data) {
+          for (const row of data) ids.push(row.restaurant_id);
+        }
+      }
+      return ids;
+    }
+
     async function loadRestaurants() {
       const { data } = await supabase
         .from("restaurants")
-        .select("id, name, address, markup_category, markup_percentage, ordering_method, direct_ordering_url, website_url, has_online_ordering, has_phone_ordering, is_delivery_app_only")
+        .select("*")
         .order("name");
 
       if (data) {
         setRestaurants(data);
-        
-        // Fetch stats for each restaurant
+
         const stats: Record<string, RestaurantStats> = {};
-        
         for (const restaurant of data) {
-          // Get UberEats item count
-          const { count: ueCount } = await supabase
-            .from("menu_items")
-            .select("*", { count: "exact", head: true })
-            .eq("restaurant_id", restaurant.id)
-            .eq("source", "ubereats");
-          
-          // Get actual menu item count
-          const { count: actualCount } = await supabase
-            .from("menu_items")
-            .select("*", { count: "exact", head: true })
-            .eq("restaurant_id", restaurant.id)
-            .eq("source", "actual_menu");
-          
-          // Get match count
-          const { count: matchCount } = await supabase
-            .from("item_matches")
-            .select("*", { count: "exact", head: true })
-            .eq("restaurant_id", restaurant.id);
-          
           stats[restaurant.id] = {
-            ubereats_count: ueCount || 0,
-            actual_count: actualCount || 0,
-            match_count: matchCount || 0,
+            ubereats_count: 0,
+            actual_count: 0,
+            match_count: 0,
           };
         }
-        
+
+        const [ueIds, actualIds, matchIds] = await Promise.all([
+          fetchAllRestaurantIds("menu_items", "ubereats"),
+          fetchAllRestaurantIds("menu_items", "actual_menu"),
+          fetchAllRestaurantIds("item_matches"),
+        ]);
+
+        for (const id of ueIds) {
+          if (stats[id]) stats[id].ubereats_count++;
+        }
+        for (const id of actualIds) {
+          if (stats[id]) stats[id].actual_count++;
+        }
+        for (const id of matchIds) {
+          if (stats[id]) stats[id].match_count++;
+        }
+
         setRestaurantStats(stats);
       }
       setLoading(false);
     }
     loadRestaurants();
   }, []);
+
+  // Auto-select restaurant from ?restaurant=<id> deep link
+  useEffect(() => {
+    if (deepLinkHandled || loading || restaurants.length === 0) return;
+    const restaurantId = new URLSearchParams(window.location.search).get("restaurant");
+    if (!restaurantId) {
+      setDeepLinkHandled(true);
+      return;
+    }
+    const match = restaurants.find((r) => r.id === restaurantId);
+    if (match) {
+      setSelectedRestaurant(match);
+      setOrderingMethod(match.ordering_method || "unknown");
+    }
+    setDeepLinkHandled(true);
+  }, [restaurants, loading, deepLinkHandled]);
 
   // Load items when restaurant selected
   useEffect(() => {
@@ -310,6 +390,9 @@ export default function PriceMatchingPage() {
     setExpandedItemId(null);
     setQuickMatchPrice("");
     setShowImportSection(false);
+    setShowScrapeHistory(false);
+    setViewingScrapeRun(null);
+    setScrapeRuns([]);
     
     if (!selectedRestaurant) {
       setUbereatsItems([]);
@@ -327,6 +410,10 @@ export default function PriceMatchingPage() {
     setHasPhoneOrdering(selectedRestaurant.has_phone_ordering || false);
     setIsDeliveryAppOnly(selectedRestaurant.is_delivery_app_only || false);
     setMenuUrl(selectedRestaurant.website_url || selectedRestaurant.direct_ordering_url || "");
+    // Pre-populate import URL from saved actual_menu_url
+    if (selectedRestaurant.actual_menu_url) {
+      setImportUrl(selectedRestaurant.actual_menu_url);
+    }
 
     const restaurant = selectedRestaurant;
     async function loadItems() {
@@ -356,9 +443,17 @@ export default function PriceMatchingPage() {
         .select("*")
         .eq("restaurant_id", restaurant.id);
 
+      // Load scrape history
+      const { data: runs } = await supabase
+        .from("scrape_runs")
+        .select("*")
+        .eq("restaurant_id", restaurant.id)
+        .order("scraped_at", { ascending: false });
+
       setUbereatsItems(ueItems || []);
       setActualItems(actualMenuItems || []);
       setMatches(existingMatches || []);
+      setScrapeRuns((runs as ScrapeRun[]) || []);
       setLoading(false);
     }
 
@@ -620,9 +715,14 @@ export default function PriceMatchingPage() {
       else if (avgMarkup > 0) category = "low";
     }
 
+    const verifiedAt = new Date().toISOString();
     await supabase
       .from("restaurants")
-      .update({ markup_category: category, markup_percentage: avgMarkup })
+      .update({ 
+        markup_category: category, 
+        markup_percentage: avgMarkup,
+        actual_prices_verified_at: verifiedAt,
+      })
       .eq("id", selectedRestaurant.id);
 
     // Update selectedRestaurant state
@@ -652,6 +752,19 @@ export default function PriceMatchingPage() {
 
   // Format price
   const formatPrice = (cents: number) => `$${(cents / 100).toFixed(2)}`;
+
+  const parseSnapshot = (snapshot: ScrapeRun["items_snapshot"]): ScrapeRunItem[] => {
+    if (Array.isArray(snapshot)) return snapshot;
+    if (typeof snapshot === "string") {
+      try {
+        const parsed = JSON.parse(snapshot);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  };
 
   // Get markup color
   const getMarkupColor = (pct: number) => {
@@ -910,6 +1023,16 @@ export default function PriceMatchingPage() {
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <button
+                onClick={() => {
+                  setViewingScrapeRun(null);
+                  setShowScrapeHistory(true);
+                }}
+                className="text-sm px-3 py-1.5 rounded-lg border border-[var(--border)] hover:bg-[var(--surface-hover)]"
+                title="View scrape history"
+              >
+                Scrape History ({scrapeRuns.length})
+              </button>
               <span
                 className={`px-3 py-1 rounded-full text-sm font-medium ${
                   selectedRestaurant.markup_category === "none"
@@ -1406,6 +1529,113 @@ export default function PriceMatchingPage() {
           </div>
         </div>
       </main>
+
+      {/* Scrape History Modal */}
+      {showScrapeHistory && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-xl">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)]">
+              <div>
+                <h2 className="font-semibold">
+                  {viewingScrapeRun ? "Scrape Run Details" : "Scrape History"}
+                </h2>
+                <p className="text-xs text-[var(--muted)]">
+                  {viewingScrapeRun
+                    ? `${new Date(viewingScrapeRun.scraped_at).toLocaleString()} · ${viewingScrapeRun.source} · ${viewingScrapeRun.item_count} items`
+                    : `${selectedRestaurant.name} · ${scrapeRuns.length} run${scrapeRuns.length === 1 ? "" : "s"}`}
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  if (viewingScrapeRun) {
+                    setViewingScrapeRun(null);
+                  } else {
+                    setShowScrapeHistory(false);
+                  }
+                }}
+                className="p-2 rounded-lg hover:bg-[var(--surface-hover)]"
+                title={viewingScrapeRun ? "Back to list" : "Close"}
+              >
+                {viewingScrapeRun ? <ArrowLeft size={18} /> : <X size={18} />}
+              </button>
+            </div>
+
+            <div className="overflow-auto p-4 flex-1">
+              {!viewingScrapeRun ? (
+                scrapeRuns.length === 0 ? (
+                  <p className="text-sm text-[var(--muted)] text-center py-8">
+                    No scrape history yet. Runs appear after the nightly scraper saves them.
+                  </p>
+                ) : (
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="text-left text-[var(--muted)] border-b border-[var(--border)]">
+                        <th className="py-2 pr-2">Date</th>
+                        <th className="py-2 pr-2">Source</th>
+                        <th className="py-2 pr-2">Items</th>
+                        <th className="py-2 pr-2">Changed</th>
+                        <th className="py-2"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {scrapeRuns.map((run) => (
+                        <tr key={run.id} className="border-b border-[var(--border)] last:border-0">
+                          <td className="py-2 pr-2 whitespace-nowrap">
+                            {new Date(run.scraped_at).toLocaleString()}
+                          </td>
+                          <td className="py-2 pr-2">{run.source}</td>
+                          <td className="py-2 pr-2">{run.item_count}</td>
+                          <td className="py-2 pr-2">
+                            {run.changed_from_previous ? "Yes" : "No"}
+                          </td>
+                          <td className="py-2 text-right">
+                            <button
+                              onClick={() => setViewingScrapeRun(run)}
+                              className="text-[var(--accent)] hover:underline text-xs"
+                            >
+                              View items
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )
+              ) : (
+                (() => {
+                  const items = parseSnapshot(viewingScrapeRun.items_snapshot);
+                  return items.length === 0 ? (
+                    <p className="text-sm text-[var(--muted)] text-center py-8">
+                      No items in this snapshot.
+                    </p>
+                  ) : (
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="text-left text-[var(--muted)] border-b border-[var(--border)]">
+                          <th className="py-2 pr-2">Name</th>
+                          <th className="py-2 pr-2">Category</th>
+                          <th className="py-2 text-right">Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {items.map((item, idx) => (
+                          <tr key={idx} className="border-b border-[var(--border)] last:border-0">
+                            <td className="py-1.5 pr-2">{item.name}</td>
+                            <td className="py-1.5 pr-2 text-[var(--muted)]">{item.category || "—"}</td>
+                            <td className="py-1.5 text-right font-medium">
+                              {typeof item.price === "number" ? formatPrice(item.price) : "—"}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  );
+                })()
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

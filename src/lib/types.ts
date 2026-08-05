@@ -35,9 +35,12 @@ export interface Restaurant {
   has_pickup: boolean;
   ubereats_url: string | null;
   ubereats_rating: number | null;
+  slug?: string | null;
   markup_category: MarkupCategory;
   markup_percentage: number | null; // e.g., 18 for 18%
   notes: string | null;
+  actual_menu_url: string | null;
+  actual_prices_verified_at: string | null; // ISO date string
   last_verified_at: string; // ISO date string
   created_at: string;
   updated_at: string;
@@ -77,6 +80,17 @@ export interface CommunityFlag {
   status: 'pending' | 'reviewed' | 'resolved';
   created_at: string;
   resolved_at: string | null;
+}
+
+export interface ScrapeRun {
+  id: string;
+  restaurant_id: string;
+  scraped_at: string;
+  source: 'ubereats' | 'actual_menu';
+  item_count: number;
+  items_snapshot: Array<{ name: string; price: number; category: string }>;
+  changed_from_previous: boolean;
+  notes: string | null;
 }
 
 // Joined types for display

@@ -77,6 +77,24 @@ export async function getRestaurantById(id: string): Promise<Restaurant | null> 
 }
 
 /**
+ * Fetch a single restaurant by shareable slug
+ */
+export async function getRestaurantBySlug(slug: string): Promise<Restaurant | null> {
+  const { data, error } = await supabase
+    .from("restaurants")
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Error fetching restaurant by slug:", error);
+    return null;
+  }
+
+  return data as Restaurant | null;
+}
+
+/**
  * Fetch item matches for a restaurant (for price comparison display)
  */
 export async function getItemMatchesForRestaurant(

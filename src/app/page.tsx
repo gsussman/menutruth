@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Filters } from "@/components/Filters";
 import { RestaurantCard } from "@/components/RestaurantCard";
@@ -13,6 +14,7 @@ import { List, MapIcon, Loader2, ChevronLeft, ChevronRight, SlidersHorizontal } 
 type ViewMode = "split" | "list" | "map";
 
 export default function Home() {
+  const router = useRouter();
   const [filters, setFilters] = useState<RestaurantFilters>({});
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
@@ -20,8 +22,8 @@ export default function Home() {
   const [shouldFlyTo, setShouldFlyTo] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [loading, setLoading] = useState(true);
-  const [loadingMatches, setLoadingMatches] = useState(false);
   const [filtersCollapsed, setFiltersCollapsed] = useState(false);
+  const hydratedFromQuery = useRef(false);
 
   // Fetch restaurants when filters change
   useEffect(() => {
@@ -34,6 +36,37 @@ export default function Home() {
     fetchRestaurants();
   }, [filters]);
 
+  // Hydrate selection from ?r=slug once restaurants load
+  useEffect(() => {
+    if (loading || restaurants.length === 0 || hydratedFromQuery.current) return;
+    const slug = new URLSearchParams(window.location.search).get("r");
+    if (!slug) {
+      hydratedFromQuery.current = true;
+      return;
+    }
+    const match = restaurants.find((r) => r.slug === slug);
+    if (match) {
+      setSelectedRestaurant(match);
+      setShouldFlyTo(true);
+    }
+    hydratedFromQuery.current = true;
+  }, [loading, restaurants]);
+
+  // Keep ?r= in sync with selection
+  const syncUrl = useCallback(
+    (restaurant: Restaurant | null) => {
+      const params = new URLSearchParams(window.location.search);
+      if (restaurant?.slug) {
+        params.set("r", restaurant.slug);
+      } else {
+        params.delete("r");
+      }
+      const qs = params.toString();
+      router.replace(qs ? `/?${qs}` : "/", { scroll: false });
+    },
+    [router]
+  );
+
   // Fetch item matches when a restaurant is selected
   useEffect(() => {
     async function fetchMatches() {
@@ -41,25 +74,36 @@ export default function Home() {
         setSelectedItemMatches([]);
         return;
       }
-      setLoadingMatches(true);
       const matches = await getItemMatchesForRestaurant(selectedRestaurant.id);
       setSelectedItemMatches(matches);
-      setLoadingMatches(false);
     }
     fetchMatches();
   }, [selectedRestaurant]);
 
   // Handle restaurant selection from list (should fly to location)
-  const handleSelectFromList = useCallback((restaurant: Restaurant) => {
-    setSelectedRestaurant(restaurant);
-    setShouldFlyTo(true);
-  }, []);
+  const handleSelectFromList = useCallback(
+    (restaurant: Restaurant) => {
+      setSelectedRestaurant(restaurant);
+      setShouldFlyTo(true);
+      syncUrl(restaurant);
+    },
+    [syncUrl]
+  );
 
   // Handle restaurant selection from map (should NOT fly)
-  const handleSelectFromMap = useCallback((restaurant: Restaurant, fromMap: boolean) => {
-    setSelectedRestaurant(restaurant);
-    setShouldFlyTo(!fromMap);
-  }, []);
+  const handleSelectFromMap = useCallback(
+    (restaurant: Restaurant, fromMap: boolean) => {
+      setSelectedRestaurant(restaurant);
+      setShouldFlyTo(!fromMap);
+      syncUrl(restaurant);
+    },
+    [syncUrl]
+  );
+
+  const handleCloseDetail = useCallback(() => {
+    setSelectedRestaurant(null);
+    syncUrl(null);
+  }, [syncUrl]);
 
   // Handle flagging
   const handleFlag = useCallback(async () => {
@@ -231,7 +275,7 @@ export default function Home() {
                 <RestaurantDetail
                   restaurant={selectedRestaurant}
                   itemMatches={selectedItemMatches}
-                  onClose={() => setSelectedRestaurant(null)}
+                  onClose={handleCloseDetail}
                   onFlag={handleFlag}
                 />
               </div>
