@@ -140,7 +140,8 @@ export default function AdminPage() {
       if (total === 0) return [];
 
       const pages = Math.ceil(total / pageSize);
-      const selectCols = source === "ubereats" ? "restaurant_id, scraped_at" : "restaurant_id";
+      const selectCols =
+        source === "ubereats" ? "restaurant_id, scraped_at" : "restaurant_id";
       const pageResults = await Promise.all(
         Array.from({ length: pages }, (_, i) => {
           const from = i * pageSize;
@@ -155,10 +156,12 @@ export default function AdminPage() {
 
       const rows: Array<{ restaurant_id: string; scraped_at?: string }> = [];
       for (const { data } of pageResults) {
-        if (data) {
-          for (const row of data as Array<{ restaurant_id: string; scraped_at?: string }>) {
-            rows.push(row);
-          }
+        if (!data) continue;
+        for (const row of data as unknown as Array<{
+          restaurant_id: string;
+          scraped_at?: string;
+        }>) {
+          rows.push(row);
         }
       }
       return rows;
