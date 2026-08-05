@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Instrument_Serif } from "next/font/google";
 import { PostHogProvider } from "@/components/PostHogProvider";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -15,7 +16,10 @@ const instrumentSerif = Instrument_Serif({
   weight: ["400"],
 });
 
+const siteUrl = getSiteUrl();
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Menu Truth | See the Real Cost of Food Delivery",
   description:
     "Discover which restaurants mark up prices on delivery apps. Find places that offer direct ordering and save money on your next meal.",
@@ -27,6 +31,15 @@ export const metadata: Metadata = {
     "Upper West Side restaurants",
     "NYC food delivery",
   ],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    siteName: "Menu Truth",
+    type: "website",
+    locale: "en_US",
+    url: siteUrl,
+  },
 };
 
 export default function RootLayout({

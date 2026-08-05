@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 import { createClient } from "@supabase/supabase-js";
+import { getSiteUrl } from "@/lib/site-url";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://menutruth.vercel.app";
+  const baseUrl = getSiteUrl();
   const entries: MetadataRoute.Sitemap = [
     {
       url: baseUrl,

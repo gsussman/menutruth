@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { Header } from "@/components/Header";
 import { RestaurantShareClient } from "@/components/RestaurantShareClient";
 import { getRestaurantBySlug, getItemMatchesForRestaurant } from "@/lib/data";
+import { getSiteUrl } from "@/lib/site-url";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -27,7 +28,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const title = `${restaurant.name} — ${markup} | Menu Truth`;
   const description = `See how ${restaurant.name} prices on Uber Eats compare to the restaurant menu. ${markup}. Find direct ordering options and save on delivery.`;
-  const url = `https://menutruth.vercel.app/r/${restaurant.slug}`;
+  const url = `${getSiteUrl()}/r/${restaurant.slug}`;
 
   return {
     title,
