@@ -2,16 +2,23 @@
 @import "mapbox-gl/dist/mapbox-gl.css";
 
 :root {
-  --background: #faf9f7;
-  --foreground: #1a1a1a;
-  --accent: #e63946;
-  --accent-light: #ff6b6b;
-  --success: #2a9d8f;
+  /* MenuTruth brand */
+  --brand-navy: #172a3a;
+  --brand-green: #00a878;
+  --brand-red: #f25f5c;
+  --brand-cream: #faf9f6;
+
+  --background: #faf9f6;
+  --foreground: #172a3a;
+  --accent: #00a878;
+  --accent-light: #33c49a;
+  --success: #00a878;
   --warning: #e9c46a;
+  --danger: #f25f5c;
   --surface: #ffffff;
-  --surface-hover: #f5f4f2;
+  --surface-hover: #f3f1ec;
   --border: #e5e2dc;
-  --muted: #6b6b6b;
+  --muted: #5c6b76;
 }
 
 @theme inline {
@@ -21,10 +28,14 @@
   --color-accent-light: var(--accent-light);
   --color-success: var(--success);
   --color-warning: var(--warning);
+  --color-danger: var(--danger);
   --color-surface: var(--surface);
   --color-surface-hover: var(--surface-hover);
   --color-border: var(--border);
   --color-muted: var(--muted);
+  --color-brand-navy: var(--brand-navy);
+  --color-brand-green: var(--brand-green);
+  --color-brand-red: var(--brand-red);
   --font-sans: "DM Sans", system-ui, sans-serif;
   --font-display: "Instrument Serif", Georgia, serif;
 }

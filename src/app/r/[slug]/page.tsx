@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!restaurant) {
     return {
-      title: "Restaurant not found | Menu Truth",
+      title: "Restaurant not found | MenuTruth",
     };
   }
 
@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ? `~${Math.round(restaurant.markup_percentage)}% Uber Eats markup`
       : "delivery price comparison";
 
-  const title = `${restaurant.name} — ${markup} | Menu Truth`;
+  const title = `${restaurant.name} — ${markup} | MenuTruth`;
   const description = `See how ${restaurant.name} prices on Uber Eats compare to the restaurant menu. ${markup}. Find direct ordering options and save on delivery.`;
   const url = `${getSiteUrl()}/r/${restaurant.slug}`;
 
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description,
       url,
-      siteName: "Menu Truth",
+      siteName: "MenuTruth",
       type: "website",
       locale: "en_US",
     },

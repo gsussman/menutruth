@@ -20,9 +20,9 @@ const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Menu Truth | See the Real Cost of Food Delivery",
+  title: "MenuTruth | See what delivery apps add to the menu",
   description:
-    "Discover which restaurants mark up prices on delivery apps. Find places that offer direct ordering and save money on your next meal.",
+    "See what delivery apps add to the menu. Compare restaurant prices to Uber Eats and find places you can order directly to save money.",
   keywords: [
     "food delivery",
     "UberEats prices",
@@ -30,12 +30,16 @@ export const metadata: Metadata = {
     "delivery app fees",
     "Upper West Side restaurants",
     "NYC food delivery",
+    "MenuTruth",
   ],
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    siteName: "Menu Truth",
+    siteName: "MenuTruth",
+    title: "MenuTruth | See what delivery apps add to the menu",
+    description:
+      "See what delivery apps add to the menu. Compare restaurant prices to Uber Eats and order direct when you can.",
     type: "website",
     locale: "en_US",
     url: siteUrl,

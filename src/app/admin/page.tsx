@@ -459,7 +459,7 @@ export default function AdminPage() {
             <div className="flex items-center gap-3">
               <span className="text-2xl">⚙️</span>
               <div>
-                <h1 className="text-xl font-bold">Menu Truth Admin</h1>
+                <h1 className="text-xl font-bold">MenuTruth Admin</h1>
                 <p className="text-sm text-[var(--muted)]">
                   Manage restaurants, menus, and data
                 </p>

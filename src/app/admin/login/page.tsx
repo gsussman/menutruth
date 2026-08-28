@@ -87,7 +87,7 @@ export default function AdminLoginPage() {
 
           <p className="mt-6 text-center text-sm text-[var(--muted)]">
             <a href="/" className="text-[var(--accent)] hover:underline">
-              ← Back to Menu Truth
+              ← Back to MenuTruth
             </a>
           </p>
         </div>

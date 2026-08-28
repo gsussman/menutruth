@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Info } from "lucide-react";
 import { useState } from "react";
+import { Logo } from "@/components/Logo";
 
 export function Header() {
   const [showAbout, setShowAbout] = useState(false);
@@ -11,27 +12,14 @@ export function Header() {
     <>
       <header className="border-b border-[var(--border)] bg-[var(--surface)]">
         <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
             <Link
               href="/"
-              className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+              className="hover:opacity-80 transition-opacity min-w-0"
             >
-              <span className="text-3xl">🔍</span>
-              <div>
-                <h1
-                  className="text-2xl sm:text-3xl font-bold text-[var(--foreground)]"
-                  style={{
-                    fontFamily: "var(--font-instrument-serif), serif",
-                  }}
-                >
-                  Menu Truth
-                </h1>
-                <p className="text-sm text-[var(--muted)] hidden sm:block">
-                  See the real cost of food delivery
-                </p>
-              </div>
+              <Logo showTagline size={36} />
             </Link>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 shrink-0">
               <button
                 onClick={() => setShowAbout(true)}
                 className="p-2 rounded-full hover:bg-[var(--surface-hover)] transition-colors"
@@ -44,7 +32,6 @@ export function Header() {
         </div>
       </header>
 
-      {/* About Modal */}
       {showAbout && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
@@ -56,9 +43,10 @@ export function Header() {
           >
             <h2
               className="text-2xl font-bold mb-4"
-              style={{ fontFamily: "var(--font-instrument-serif), serif" }}
+              style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
             >
-              About Menu Truth
+              <span className="text-[var(--brand-navy)]">About Menu</span>
+              <span className="text-[var(--brand-green)]">Truth</span>
             </h2>
             <div className="space-y-4 text-[var(--foreground)]">
               <p>
@@ -68,13 +56,13 @@ export function Header() {
                 items are marked up 15-30% on the app.
               </p>
               <p>
-                <strong>Menu Truth</strong> helps you see which restaurants have
+                <strong>MenuTruth</strong> helps you see which restaurants have
                 markups on delivery apps, and shows you how to order directly to
                 save money.
               </p>
               <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800">
                 <p className="text-emerald-800 dark:text-emerald-200 font-medium">
-                  💡 Tip: Restaurants with &quot;Direct Delivery&quot; let you
+                  Tip: Restaurants with &quot;Direct Delivery&quot; let you
                   order through their own website or by phone — same food, lower
                   prices!
                 </p>
@@ -86,7 +74,7 @@ export function Header() {
             </div>
             <button
               onClick={() => setShowAbout(false)}
-              className="mt-6 w-full py-3 rounded-xl bg-[var(--accent)] text-white font-medium hover:opacity-90 transition-opacity"
+              className="mt-6 w-full py-3 rounded-xl bg-[var(--brand-green)] text-white font-medium hover:opacity-90 transition-opacity"
             >
               Got it!
             </button>

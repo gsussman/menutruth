@@ -16,7 +16,7 @@ export default function RestaurantNotFound() {
         href="/"
         className="px-4 py-2 rounded-full bg-[var(--accent)] text-white text-sm font-medium hover:opacity-90"
       >
-        Back to Menu Truth
+        Back to MenuTruth
       </Link>
     </div>
   );
