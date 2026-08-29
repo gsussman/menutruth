@@ -40,15 +40,9 @@
   --font-display: "Instrument Serif", Georgia, serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f0f0f;
-    --foreground: #f5f5f5;
-    --surface: #1a1a1a;
-    --surface-hover: #252525;
-    --border: #2a2a2a;
-    --muted: #999999;
-  }
+/* Always light — MenuTruth brand is cream/navy; ignore OS dark mode */
+html {
+  color-scheme: light;
 }
 
 body {
