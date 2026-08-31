@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "mapbox-gl/dist/mapbox-gl.css";
 
+/* Never auto-apply dark: from OS preference — site is always light */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   /* MenuTruth brand */
   --brand-navy: #172a3a;
